@@ -1,4 +1,6 @@
+using Marketplace.Application.Interfaces;
 using Marketplace.Infrastructure.Data;
+using Marketplace.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +12,8 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 
 builder.Services.AddDbContext<MarketplaceDbContext>(options =>
     options.UseSqlServer(connectionString));
+
+builder.Services.AddScoped<IProductService, ProductService>();
 
 var app = builder.Build();
 
