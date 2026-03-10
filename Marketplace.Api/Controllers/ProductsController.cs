@@ -2,11 +2,13 @@ using Marketplace.Application.DTOs;
 using Marketplace.Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace Marketplace.Api.Controllers;
 
 [ApiController] // Turns on automatic validation for DTOs
 [Route("api/[controller]")] // Defines the base URL for every method in this class
+[EnableRateLimiting("StrictPolicy")]
 public class ProductsController : ControllerBase
 {
     private readonly IProductService _productService;

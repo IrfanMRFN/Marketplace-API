@@ -1,11 +1,13 @@
 using Marketplace.Application.DTOs;
 using Marketplace.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace Marketplace.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[EnableRateLimiting("StrictPolicy")]
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
