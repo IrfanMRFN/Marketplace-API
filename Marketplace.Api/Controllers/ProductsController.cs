@@ -1,5 +1,6 @@
 using Marketplace.Application.DTOs;
 using Marketplace.Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Marketplace.Api.Controllers;
@@ -33,6 +34,7 @@ public class ProductsController : ControllerBase
         return Ok(product); // 200
     }
 
+    [Authorize]
     [HttpPost] // POST: api/products
     public async Task<ActionResult<ProductDto>> CreateProduct([FromBody] CreateProductDto request)
     {

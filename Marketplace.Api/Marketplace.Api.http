@@ -2,13 +2,14 @@
 
 ### Create a new Product
 POST {{Host}}/api/products
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhZG1pbkBtYXJrZXRwbGFjZS5jb20iLCJqdGkiOiJkYmUwYzZhNC0xMDZlLTQyNTYtOWJiZi0zYThjNTgyYzYwNzUiLCJuYmYiOjE3NzMxMzMwMzUsImV4cCI6MTc3MzE0MDIzNSwiaWF0IjoxNzczMTMzMDM1LCJpc3MiOiJNYXJrZXRwbGFjZUFwaSIsImF1ZCI6Ik1hcmtldHBsYWNlQ2xpZW50In0.RPZBmLQ-ipybck0yNMtckqp3IobCkeDlNcru4z8SPWk
 Content-Type: application/json
 
 {
-    "name": "Mechanical Keyboard",
-    "description": "Clicky blue switches, RGB lighting",
-    "price": 125.50,
-    "stockQuantity": 50
+    "name": "Gaming Mouse",
+    "description": "Wireless, 20000 DPI",
+    "price": 85.00,
+    "stockQuantity": 100
 }
 
 ### Get all Products
