@@ -2,7 +2,7 @@
 
 ### Create a new Product
 POST {{Host}}/api/products
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhZG1pbkBtYXJrZXRwbGFjZS5jb20iLCJqdGkiOiJkYmUwYzZhNC0xMDZlLTQyNTYtOWJiZi0zYThjNTgyYzYwNzUiLCJuYmYiOjE3NzMxMzMwMzUsImV4cCI6MTc3MzE0MDIzNSwiaWF0IjoxNzczMTMzMDM1LCJpc3MiOiJNYXJrZXRwbGFjZUFwaSIsImF1ZCI6Ik1hcmtldHBsYWNlQ2xpZW50In0.RPZBmLQ-ipybck0yNMtckqp3IobCkeDlNcru4z8SPWk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhZG1pbkBtYXJrZXRwbGFjZS5jb20iLCJqdGkiOiJiNTYzOTNjMi02N2UyLTRlZTQtOGI4ZS1hYzNlMWNkMWY3ODMiLCJuYmYiOjE3NzMxODUyOTEsImV4cCI6MTc3MzE5MjQ5MSwiaWF0IjoxNzczMTg1MjkxLCJpc3MiOiJNYXJrZXRwbGFjZUFwaSIsImF1ZCI6Ik1hcmtldHBsYWNlQ2xpZW50In0.tc0WXpQofBkvsZrPb-cFZAESI1t3q3Tm0RZgLLu4M3E
 Content-Type: application/json
 
 {
@@ -17,6 +17,25 @@ GET {{Host}}/api/products
 
 ### Get Product by Id
 GET {{Host}}/api/products/1
+
+### Update Product
+PUT {{Host}}/api/products/2
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhZG1pbkBtYXJrZXRwbGFjZS5jb20iLCJqdGkiOiJiNTYzOTNjMi02N2UyLTRlZTQtOGI4ZS1hYzNlMWNkMWY3ODMiLCJuYmYiOjE3NzMxODUyOTEsImV4cCI6MTc3MzE5MjQ5MSwiaWF0IjoxNzczMTg1MjkxLCJpc3MiOiJNYXJrZXRwbGFjZUFwaSIsImF1ZCI6Ik1hcmtldHBsYWNlQ2xpZW50In0.tc0WXpQofBkvsZrPb-cFZAESI1t3q3Tm0RZgLLu4M3E
+Content-Type: application/json
+
+{
+    "name": "Updated product",
+    "description": "Testing updating a product",
+    "price": 100.00,
+    "stockQuantity": 1
+}
+
+### Delete product
+DELETE {{Host}}/api/products/6
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhZG1pbkBtYXJrZXRwbGFjZS5jb20iLCJqdGkiOiJiNTYzOTNjMi02N2UyLTRlZTQtOGI4ZS1hYzNlMWNkMWY3ODMiLCJuYmYiOjE3NzMxODUyOTEsImV4cCI6MTc3MzE5MjQ5MSwiaWF0IjoxNzczMTg1MjkxLCJpc3MiOiJNYXJrZXRwbGFjZUFwaSIsImF1ZCI6Ik1hcmtldHBsYWNlQ2xpZW50In0.tc0WXpQofBkvsZrPb-cFZAESI1t3q3Tm0RZgLLu4M3E
+
+
+
 
 ### Register a new secure user
 POST {{Host}}/api/auth/register

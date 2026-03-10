@@ -37,7 +37,7 @@ public class ProductsController : ControllerBase
     }
 
     [Authorize]
-    [HttpPost] // POST: api/products
+    [HttpPost] // POST: api/products (SECURED)
     public async Task<ActionResult<ProductDto>> CreateProduct([FromBody] CreateProductDto request)
     {
         var newProduct = await _productService.CreateProductAsync(request);
@@ -45,4 +45,28 @@ public class ProductsController : ControllerBase
         // Returns a 201 Created status, new product URL address and the new product itself
         return CreatedAtAction(nameof(GetProductById), new { id = newProduct.Id}, newProduct);
     }
+
+    [Authorize]
+    [HttpPut("{id}")] // PUT: api/products/{id} (SECURED)
+    public async Task<ActionResult<ProductDto>> UpdateProduct(int id, [FromBody] UpdateProductDto request)
+    {
+        var updatedProduct = await _productService.UpdateProductAsync(id, request);
+
+        if (updatedProduct == null)
+            return NotFound(new { Message = $"Product with ID {id} not found."});
+
+        return Ok(updatedProduct);
+    }
+
+    [Authorize]
+    [HttpDelete("{id}")] // DELETE: api/products/{id} (SECURED)
+    public async Task<IActionResult> DeleteProduct(int id)
+    {
+        var success = await _productService.DeleteProductAsync(id);
+
+        if (!success)
+            return NotFound( new { Message = $"Product with ID {id} not found."});
+
+        return NoContent(); // 204 No Content, Standard successful delete response
+    } 
 }

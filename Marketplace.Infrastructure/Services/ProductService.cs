@@ -51,4 +51,34 @@ public class ProductService : IProductService
         // Return mapped Output DTO
         return new ProductDto(newProduct.Id, newProduct.Name, newProduct.Description, newProduct.Price, newProduct.StockQuantity);
     }
+
+    public async Task<ProductDto?> UpdateProductAsync(int id, UpdateProductDto request)
+    {
+        // Find the existing product
+        var product = await _db.Products.FindAsync(id);
+        if (product == null) return null;
+
+        // Update the properties
+        product.Name = request.Name;
+        product.Description = request.Description;
+        product.Price = request.Price;
+        product.StockQuantity = request.StockQuantity;
+
+        // Save changes
+        await _db.SaveChangesAsync();
+
+        // Return the updated DTO
+        return new ProductDto(product.Id, product.Name, product.Description, product.Price, product.StockQuantity);
+    }
+
+    public async Task<bool> DeleteProductAsync(int id)
+    {
+        var product = await _db.Products.FindAsync(id);
+        if (product == null) return false;
+
+        _db.Products.Remove(product);
+        await _db.SaveChangesAsync();
+
+        return true;
+    }
 }

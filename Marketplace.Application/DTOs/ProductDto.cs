@@ -16,3 +16,11 @@ public record CreateProductDto(
     decimal Price,
     int StockQuantity
 );
+
+// Input DTO
+public record UpdateProductDto(
+    string Name,
+    string Description,
+    decimal Price,
+    int StockQuantity
+);
