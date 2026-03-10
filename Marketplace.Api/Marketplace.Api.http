@@ -1,1 +1,18 @@
 @Host = http://localhost:5266
+
+### Create a new Product
+POST {{Host}}/api/products
+Content-Type: application/json
+
+{
+    "name": "Mechanical Keyboard",
+    "description": "Clicky blue switches, RGB lighting",
+    "price": 125.50,
+    "stockQuantity": 50
+}
+
+### Get all Products
+GET {{Host}}/api/products
+
+### Get Product by Id
+GET {{Host}}/api/products/3
