@@ -18,6 +18,7 @@ builder.Services.AddDbContext<MarketplaceDbContext>(options =>
     options.UseSqlServer(connectionString));
 
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 var jwtSettings = builder.Configuration.GetSection("Jwt");
 var secretKey = Encoding.UTF8.GetBytes(jwtSettings["Key"]!);

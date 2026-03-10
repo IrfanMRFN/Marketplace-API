@@ -15,4 +15,23 @@ Content-Type: application/json
 GET {{Host}}/api/products
 
 ### Get Product by Id
-GET {{Host}}/api/products/3
+GET {{Host}}/api/products/1
+
+### Register a new secure user
+POST {{Host}}/api/auth/register
+Content-Type: application/json
+
+{
+    "username": "AdminUser",
+    "email": "admin@marketplace.com",
+    "password": "SuperSecretPassword123!"
+}
+
+### Log in to get the JWT Token
+POST {{Host}}/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "admin@marketplace.com",
+    "password": "SuperSecretPassword123!"
+}
