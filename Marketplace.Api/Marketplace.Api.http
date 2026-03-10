@@ -55,3 +55,16 @@ Content-Type: application/json
     "email": "admin@marketplace.com",
     "password": "SuperSecretPassword123!"
 }
+
+
+
+
+### Place an Order
+POST {{Host}}/api/orders
+Authorization: Bearer euJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhZG1pbkBtYXJrZXRwbGFjZS5jb20iLCJqdGkiOiIxODlkMGM1ZC0wZmEyLTQ0YTItYjg4Yi0zZjFmMTk5YmI5OTkiLCJuYmYiOjE3NzMxODY5MDEsImV4cCI6MTc3MzE5NDEwMSwiaWF0IjoxNzczMTg2OTAxLCJpc3MiOiJNYXJrZXRwbGFjZUFwaSIsImF1ZCI6Ik1hcmtldHBsYWNlQ2xpZW50In0.R-UpxbdgpNxQnuNSuI9aaPYKtI40h45Gj903XloOFJQ
+Content-Type: application/json
+
+{
+    "productId": 1,
+    "quantity": 3
+}
