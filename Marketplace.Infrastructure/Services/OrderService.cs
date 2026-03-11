@@ -2,6 +2,7 @@ using Marketplace.Application.DTOs;
 using Marketplace.Application.Interfaces;
 using Marketplace.Domain.Entities;
 using Marketplace.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Marketplace.Infrastructure.Services;
 
@@ -47,5 +48,23 @@ public class OrderService : IOrderService
             order.TotalPrice,
             order.OrderDate
         );
+    }
+
+    public async Task<IEnumerable<OrderResponseDto>> GetOrdersAsync(int userId)
+    {
+        var orders = await _db.Orders
+            .Include(o => o.Product)
+            .Where(o => o.UserId == userId)
+            .OrderByDescending(o => o.OrderDate)
+            .ToListAsync();
+
+        return orders.Select(o => new OrderResponseDto(
+            o.Id,
+            o.ProductId,
+            o.Product.Name,
+            o.Quantity,
+            o.TotalPrice,
+            o.OrderDate
+        ));
     }
 }

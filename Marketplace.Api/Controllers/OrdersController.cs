@@ -41,4 +41,17 @@ public class OrdersController : ControllerBase
             return BadRequest(new { Message = ex.Message });
         }
     }
+
+    [HttpGet] // GET: api/orders
+    public async Task<ActionResult<IEnumerable<OrderResponseDto>>> GetOrders()
+    {
+        var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        if (!int.TryParse(userIdString, out int userId))
+            return Unauthorized(new { Message = "Invalid user token."});
+
+        var orders = await _orderService.GetOrdersAsync(userId);
+
+        return Ok(orders);
+    }
 }
