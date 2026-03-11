@@ -1,8 +1,9 @@
 @Host = http://localhost:5266
+@Token = paste_token_here_temporarily_when_testing
 
 ### Create a new Product
 POST {{Host}}/api/products
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhZG1pbkBtYXJrZXRwbGFjZS5jb20iLCJqdGkiOiJiNTYzOTNjMi02N2UyLTRlZTQtOGI4ZS1hYzNlMWNkMWY3ODMiLCJuYmYiOjE3NzMxODUyOTEsImV4cCI6MTc3MzE5MjQ5MSwiaWF0IjoxNzczMTg1MjkxLCJpc3MiOiJNYXJrZXRwbGFjZUFwaSIsImF1ZCI6Ik1hcmtldHBsYWNlQ2xpZW50In0.tc0WXpQofBkvsZrPb-cFZAESI1t3q3Tm0RZgLLu4M3E
+Authorization: Bearer {{Token}}
 Content-Type: application/json
 
 {
@@ -20,7 +21,7 @@ GET {{Host}}/api/products/1
 
 ### Update Product
 PUT {{Host}}/api/products/2
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhZG1pbkBtYXJrZXRwbGFjZS5jb20iLCJqdGkiOiJiNTYzOTNjMi02N2UyLTRlZTQtOGI4ZS1hYzNlMWNkMWY3ODMiLCJuYmYiOjE3NzMxODUyOTEsImV4cCI6MTc3MzE5MjQ5MSwiaWF0IjoxNzczMTg1MjkxLCJpc3MiOiJNYXJrZXRwbGFjZUFwaSIsImF1ZCI6Ik1hcmtldHBsYWNlQ2xpZW50In0.tc0WXpQofBkvsZrPb-cFZAESI1t3q3Tm0RZgLLu4M3E
+Authorization: Bearer {{Token}}
 Content-Type: application/json
 
 {
@@ -32,7 +33,7 @@ Content-Type: application/json
 
 ### Delete product
 DELETE {{Host}}/api/products/6
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhZG1pbkBtYXJrZXRwbGFjZS5jb20iLCJqdGkiOiJiNTYzOTNjMi02N2UyLTRlZTQtOGI4ZS1hYzNlMWNkMWY3ODMiLCJuYmYiOjE3NzMxODUyOTEsImV4cCI6MTc3MzE5MjQ5MSwiaWF0IjoxNzczMTg1MjkxLCJpc3MiOiJNYXJrZXRwbGFjZUFwaSIsImF1ZCI6Ik1hcmtldHBsYWNlQ2xpZW50In0.tc0WXpQofBkvsZrPb-cFZAESI1t3q3Tm0RZgLLu4M3E
+Authorization: Bearer {{Token}}
 
 
 
@@ -61,7 +62,7 @@ Content-Type: application/json
 
 ### Place an Order
 POST {{Host}}/api/orders
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhZG1pbkBtYXJrZXRwbGFjZS5jb20iLCJqdGkiOiI1MWYxNjUxMC1hOTFjLTQ1ODQtYjRhNC1lYjViZDVmZjg0ZjciLCJuYmYiOjE3NzMxODc3OTIsImV4cCI6MTc3MzE5NDk5MiwiaWF0IjoxNzczMTg3NzkyLCJpc3MiOiJNYXJrZXRwbGFjZUFwaSIsImF1ZCI6Ik1hcmtldHBsYWNlQ2xpZW50In0.-nXr-NrEKnCERaQ7gn-TpDimz5HaP8jn0GsfUwb2MeQ
+Authorization: Bearer {{Token}}
 Content-Type: application/json
 
 {
@@ -71,4 +72,4 @@ Content-Type: application/json
 
 ### Get User Order history
 GET {{Host}}/api/orders
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhZG1pbkBtYXJrZXRwbGFjZS5jb20iLCJqdGkiOiI1MWYxNjUxMC1hOTFjLTQ1ODQtYjRhNC1lYjViZDVmZjg0ZjciLCJuYmYiOjE3NzMxODc3OTIsImV4cCI6MTc3MzE5NDk5MiwiaWF0IjoxNzczMTg3NzkyLCJpc3MiOiJNYXJrZXRwbGFjZUFwaSIsImF1ZCI6Ik1hcmtldHBsYWNlQ2xpZW50In0.-nXr-NrEKnCERaQ7gn-TpDimz5HaP8jn0GsfUwb2MeQ
+Authorization: Bearer {{Token}}
