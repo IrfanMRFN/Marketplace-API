@@ -45,7 +45,7 @@ Content-Type: application/json
 {
     "username": "AdminUser",
     "email": "admin@marketplace.com",
-    "password": "SuperSecretPassword123!"
+    "password": "SuperSecretAdminPassword123!"
 }
 
 ### Log in to get the JWT Token
@@ -54,7 +54,7 @@ Content-Type: application/json
 
 {
     "email": "admin@marketplace.com",
-    "password": "SuperSecretPassword123!"
+    "password": "SuperSecretAdminPassword123!"
 }
 
 

@@ -32,7 +32,7 @@ public class ProductsController : ApiControllerBase
         return result.IsSuccess ? Ok(result.Value) : HandleFailure(result);
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [HttpPost] // POST: api/products (SECURED)
     public async Task<ActionResult<ProductDto>> CreateProduct([FromBody] CreateProductDto request)
     {
@@ -43,7 +43,7 @@ public class ProductsController : ApiControllerBase
             : HandleFailure(result);
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [HttpPut("{id}")] // PUT: api/products/{id} (SECURED)
     public async Task<ActionResult<ProductDto>> UpdateProduct(int id, [FromBody] UpdateProductDto request)
     {
@@ -51,7 +51,7 @@ public class ProductsController : ApiControllerBase
         return result.IsSuccess ? Ok(result.Value) : HandleFailure(result);
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{id}")] // DELETE: api/products/{id} (SECURED)
     public async Task<IActionResult> DeleteProduct(int id)
     {
