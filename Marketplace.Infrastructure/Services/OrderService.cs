@@ -39,9 +39,20 @@ public class OrderService : IOrderService
         };
 
         _db.Orders.Add(order);
-        await _db.SaveChangesAsync();
 
-        var responseDto =  new OrderResponseDto(
+        try
+        {
+            await _db.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            return Result<OrderResponseDto>.Failure(
+                "The product stock was just updated by another user. Please review the available stock and try again.",
+                ErrorType.Conflict
+            );
+        }
+
+        var responseDto = new OrderResponseDto(
             order.Id,
             product.Id,
             product.Name,
@@ -55,6 +66,7 @@ public class OrderService : IOrderService
     public async Task<Result<IEnumerable<OrderResponseDto>>> GetOrdersAsync(int userId)
     {
         var orders = await _db.Orders
+            .AsNoTracking()
             .Include(o => o.Product)
             .Where(o => o.UserId == userId)
             .OrderByDescending(o => o.OrderDate)

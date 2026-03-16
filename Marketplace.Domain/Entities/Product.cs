@@ -7,4 +7,7 @@ public class Product
     public required string Description { get; set; }
     public decimal Price { get; set; }
     public int StockQuantity { get; set; }
+
+    // Concurrency token
+    public byte[] Version { get; set; } = [];    
 }

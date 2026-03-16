@@ -22,6 +22,10 @@ public class MarketplaceDbContext : DbContext
         modelBuilder.Entity<Product>()
             .Property(p => p.Price)
             .HasPrecision(18,2);
+
+        modelBuilder.Entity<Product>()
+            .Property(p => p.Version)
+            .IsRowVersion();
         
         modelBuilder.Entity<Order>()
             .Property(o => o.TotalPrice)
