@@ -1,5 +1,6 @@
 using System.Text;
 using System.Threading.RateLimiting;
+using Marketplace.Api.Middleware;
 using Marketplace.Application.Interfaces;
 using Marketplace.Infrastructure.Data;
 using Marketplace.Infrastructure.Services;
@@ -12,6 +13,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi();
 builder.Services.AddControllers();
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("Connection string not found.");
@@ -25,7 +28,7 @@ builder.Services.AddScoped<IOrderService, OrderService>();
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("ReactFrontend", policy =>
+    options.AddPolicy("Frontend", policy =>
     {
         policy.WithOrigins("http://localhost:5173")
             .AllowAnyHeader()
@@ -71,6 +74,8 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
+app.UseExceptionHandler();
+
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
@@ -78,7 +83,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors("ReactFrontend");
+app.UseCors("Frontend");
 app.UseRateLimiter();
 
 app.UseAuthentication();

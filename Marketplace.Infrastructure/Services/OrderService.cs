@@ -1,3 +1,4 @@
+using Marketplace.Application.Common;
 using Marketplace.Application.DTOs;
 using Marketplace.Application.Interfaces;
 using Marketplace.Domain.Entities;
@@ -15,14 +16,14 @@ public class OrderService : IOrderService
         _db = db;
     }
 
-    public async Task<OrderResponseDto> CreateOrderAsync(int userId, CreateOrderDto request)
+    public async Task<Result<OrderResponseDto>> CreateOrderAsync(int userId, CreateOrderDto request)
     {
         var product = await _db.Products.FindAsync(request.ProductId);
         if (product == null)
-            throw new KeyNotFoundException($"Product with ID {request.ProductId} was not found.");
+            return Result<OrderResponseDto>.Failure($"Product with ID {request.ProductId} was not found.", ErrorType.NotFound);
 
         if (product.StockQuantity < request.Quantity)
-            throw new InvalidOperationException($"Not enough stock. Only {product.StockQuantity} available.");
+            return Result<OrderResponseDto>.Failure($"Not enough stock. Only {product.StockQuantity} available.", ErrorType.BadRequest);
 
         // Calculate total and reduce stocks
         var totalPrice = product.Price * request.Quantity;
@@ -40,7 +41,7 @@ public class OrderService : IOrderService
         _db.Orders.Add(order);
         await _db.SaveChangesAsync();
 
-        return new OrderResponseDto(
+        var responseDto =  new OrderResponseDto(
             order.Id,
             product.Id,
             product.Name,
@@ -48,9 +49,10 @@ public class OrderService : IOrderService
             order.TotalPrice,
             order.OrderDate
         );
+        return Result<OrderResponseDto>.Success(responseDto);
     }
 
-    public async Task<IEnumerable<OrderResponseDto>> GetOrdersAsync(int userId)
+    public async Task<Result<IEnumerable<OrderResponseDto>>> GetOrdersAsync(int userId)
     {
         var orders = await _db.Orders
             .Include(o => o.Product)
@@ -58,7 +60,7 @@ public class OrderService : IOrderService
             .OrderByDescending(o => o.OrderDate)
             .ToListAsync();
 
-        return orders.Select(o => new OrderResponseDto(
+        var responseDtos = orders.Select(o => new OrderResponseDto(
             o.Id,
             o.ProductId,
             o.Product.Name,
@@ -66,5 +68,6 @@ public class OrderService : IOrderService
             o.TotalPrice,
             o.OrderDate
         ));
+        return Result<IEnumerable<OrderResponseDto>>.Success(responseDtos);
     }
 }

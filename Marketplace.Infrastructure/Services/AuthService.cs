@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Marketplace.Application.Common;
 using Marketplace.Application.DTOs;
 using Marketplace.Application.Interfaces;
 using Marketplace.Domain.Entities;
@@ -22,12 +23,12 @@ public class AuthService : IAuthService
         _config = config;
     }
 
-    public async Task<AuthResponseDto> RegisterAsync(RegisterDto request)
+    public async Task<Result<AuthResponseDto>> RegisterAsync(RegisterDto request)
     {
         // Check if the email already exists
         var existingUser = await _db.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
         if (existingUser != null)
-            throw new InvalidOperationException("Email is already registered.");
+            return Result<AuthResponseDto>.Failure("Email is already registered.", ErrorType.Conflict);
 
         // Hash the password using BCrypt
         var hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.Password);
@@ -44,22 +45,22 @@ public class AuthService : IAuthService
         _db.Users.Add(newUser);
         await _db.SaveChangesAsync();
 
-        return new AuthResponseDto(string.Empty, "User registered successfully. Please log in.");
+        return Result<AuthResponseDto>.Success(new AuthResponseDto(string.Empty, "User registered successfully. Please log in."));
     }
 
-    public async Task<AuthResponseDto> LoginAsync(LoginDto request)
+    public async Task<Result<AuthResponseDto>> LoginAsync(LoginDto request)
     {
         // Find the user by Email
         var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
 
         // Verify the user exists and the password matches the hash
         if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
-            throw new UnauthorizedAccessException("Invalid email or password.");
+            return Result<AuthResponseDto>.Failure("Invalid email or password.", ErrorType.Unauthorized);
 
         // Generate the JWT
         var token = GenerateJwtToken(user);
 
-        return new AuthResponseDto(token, "Login successful.");
+        return Result<AuthResponseDto>.Success(new AuthResponseDto(token, "Login successful."));
     }
 
     private string GenerateJwtToken(User user)

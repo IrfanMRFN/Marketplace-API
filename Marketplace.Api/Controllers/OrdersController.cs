@@ -9,7 +9,7 @@ namespace Marketplace.Api.Controllers;
 [Authorize]
 [ApiController]
 [Route("api/[controller]")]
-public class OrdersController : ControllerBase
+public class OrdersController : ApiControllerBase
 {
     private readonly IOrderService _orderService;
 
@@ -21,25 +21,14 @@ public class OrdersController : ControllerBase
     [HttpPost] // POST: api/orders
     public async Task<IActionResult> CreateOrder([FromBody] CreateOrderDto request)
     {
-        try
-        {
-            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            if (!int.TryParse(userIdString, out int userId))
-                return Unauthorized(new { Message = "Invalid user token." });
+        if (!int.TryParse(userIdString, out int userId))
+            return Unauthorized(new { Message = "Invalid user token." });
 
-            var response = await _orderService.CreateOrderAsync(userId, request);
+        var result = await _orderService.CreateOrderAsync(userId, request);
 
-            return Ok(response);
-        }
-        catch (KeyNotFoundException ex)
-        {
-            return NotFound(new { Message = ex.Message });
-        }
-        catch (InvalidOperationException ex)
-        {
-            return BadRequest(new { Message = ex.Message });
-        }
+        return result.IsSuccess ? Ok(result.Value) : HandleFailure(result);
     }
 
     [HttpGet] // GET: api/orders
@@ -48,10 +37,10 @@ public class OrdersController : ControllerBase
         var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
         if (!int.TryParse(userIdString, out int userId))
-            return Unauthorized(new { Message = "Invalid user token."});
+            return Unauthorized(new { Message = "Invalid user token." });
 
-        var orders = await _orderService.GetOrdersAsync(userId);
+        var result = await _orderService.GetOrdersAsync(userId);
 
-        return Ok(orders);
+        return result.IsSuccess ? Ok(result.Value) : HandleFailure(result);
     }
 }

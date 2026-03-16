@@ -9,7 +9,7 @@ namespace Marketplace.Api.Controllers;
 [ApiController] // Turns on automatic validation for DTOs
 [Route("api/[controller]")] // Defines the base URL for every method in this class
 [EnableRateLimiting("StrictPolicy")]
-public class ProductsController : ControllerBase
+public class ProductsController : ApiControllerBase
 {
     private readonly IProductService _productService;
 
@@ -21,52 +21,42 @@ public class ProductsController : ControllerBase
     [HttpGet] // GET: api/products
     public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts()
     {
-        var products = await _productService.GetAllProductsAsync();
-        return Ok(products); // Returns a 200 OK with the JSON array
+        var result = await _productService.GetAllProductsAsync();
+        return result.IsSuccess ? Ok(result.Value) : HandleFailure(result);
     }
 
     [HttpGet("{id}")] // GET: api/products/{id}
     public async Task<ActionResult<ProductDto>> GetProductById(int id)
     {
-        var product = await _productService.GetProductByIdAsync(id);
-
-        if (product == null)
-            return NotFound(new { Message = $"Product with ID {id} not found."}); // 404
-
-        return Ok(product); // 200
+        var result = await _productService.GetProductByIdAsync(id);
+        return result.IsSuccess ? Ok(result.Value) : HandleFailure(result);
     }
 
     [Authorize]
     [HttpPost] // POST: api/products (SECURED)
     public async Task<ActionResult<ProductDto>> CreateProduct([FromBody] CreateProductDto request)
     {
-        var newProduct = await _productService.CreateProductAsync(request);
+        var result = await _productService.CreateProductAsync(request);
 
-        // Returns a 201 Created status, new product URL address and the new product itself
-        return CreatedAtAction(nameof(GetProductById), new { id = newProduct.Id}, newProduct);
+        return result.IsSuccess
+            ? CreatedAtAction(nameof(GetProductById), new { id = result.Value!.Id}, result.Value)
+            : HandleFailure(result);
     }
 
     [Authorize]
     [HttpPut("{id}")] // PUT: api/products/{id} (SECURED)
     public async Task<ActionResult<ProductDto>> UpdateProduct(int id, [FromBody] UpdateProductDto request)
     {
-        var updatedProduct = await _productService.UpdateProductAsync(id, request);
-
-        if (updatedProduct == null)
-            return NotFound(new { Message = $"Product with ID {id} not found."});
-
-        return Ok(updatedProduct);
+        var result = await _productService.UpdateProductAsync(id, request);
+        return result.IsSuccess ? Ok(result.Value) : HandleFailure(result);
     }
 
     [Authorize]
     [HttpDelete("{id}")] // DELETE: api/products/{id} (SECURED)
     public async Task<IActionResult> DeleteProduct(int id)
     {
-        var success = await _productService.DeleteProductAsync(id);
+        var result = await _productService.DeleteProductAsync(id);
 
-        if (!success)
-            return NotFound( new { Message = $"Product with ID {id} not found."});
-
-        return NoContent(); // 204 No Content, Standard successful delete response
+        return result.IsSuccess ? NoContent() : HandleFailure(result); // 204 No Content, Standard successful delete response
     } 
 }

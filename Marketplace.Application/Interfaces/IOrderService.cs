@@ -1,9 +1,10 @@
+using Marketplace.Application.Common;
 using Marketplace.Application.DTOs;
 
 namespace Marketplace.Application.Interfaces;
 
 public interface IOrderService
 {
-    Task<OrderResponseDto> CreateOrderAsync(int userId, CreateOrderDto request);
-    Task<IEnumerable<OrderResponseDto>> GetOrdersAsync(int userId);
+    Task<Result<OrderResponseDto>> CreateOrderAsync(int userId, CreateOrderDto request);
+    Task<Result<IEnumerable<OrderResponseDto>>> GetOrdersAsync(int userId);
 }

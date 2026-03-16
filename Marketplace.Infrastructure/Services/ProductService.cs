@@ -1,3 +1,4 @@
+using Marketplace.Application.Common;
 using Marketplace.Application.DTOs;
 using Marketplace.Application.Interfaces;
 using Marketplace.Domain.Entities;
@@ -15,25 +16,28 @@ public class ProductService : IProductService
         _db = db;
     }
 
-    public async Task<IEnumerable<ProductDto>> GetAllProductsAsync()
+    public async Task<Result<IEnumerable<ProductDto>>> GetAllProductsAsync()
     {
         var products = await _db.Products.ToListAsync();
 
         // Map the Domain Entities to the output DTOs
-        return products.Select(p =>
+        var productDtos = products.Select(p =>
             new ProductDto(p.Id, p.Name, p.Description, p.Price, p.StockQuantity));
+
+        return Result<IEnumerable<ProductDto>>.Success(productDtos);
     }
 
-    public async Task<ProductDto?> GetProductByIdAsync(int id)
+    public async Task<Result<ProductDto>> GetProductByIdAsync(int id)
     {
         var product = await _db.Products.FindAsync(id);
 
-        if (product == null) return null;
+        if (product == null)
+            return Result<ProductDto>.Failure($"Product with ID {id} not found.", ErrorType.NotFound);
 
-        return new ProductDto(product.Id, product.Name, product.Description, product.Price, product.StockQuantity);
+        return Result<ProductDto>.Success(new ProductDto(product.Id, product.Name, product.Description, product.Price, product.StockQuantity));
     }
 
-    public async Task<ProductDto> CreateProductAsync(CreateProductDto request)
+    public async Task<Result<ProductDto>> CreateProductAsync(CreateProductDto request)
     {
         // Map the input DTO to a new Domain Entity
         var newProduct = new Product
@@ -49,14 +53,15 @@ public class ProductService : IProductService
         await _db.SaveChangesAsync();
 
         // Return mapped Output DTO
-        return new ProductDto(newProduct.Id, newProduct.Name, newProduct.Description, newProduct.Price, newProduct.StockQuantity);
+        return Result<ProductDto>.Success(new ProductDto(newProduct.Id, newProduct.Name, newProduct.Description, newProduct.Price, newProduct.StockQuantity));
     }
 
-    public async Task<ProductDto?> UpdateProductAsync(int id, UpdateProductDto request)
+    public async Task<Result<ProductDto>> UpdateProductAsync(int id, UpdateProductDto request)
     {
         // Find the existing product
         var product = await _db.Products.FindAsync(id);
-        if (product == null) return null;
+        if (product == null) 
+            return Result<ProductDto>.Failure($"Product with ID {id} not found.", ErrorType.NotFound);
 
         // Update the properties
         product.Name = request.Name;
@@ -68,17 +73,18 @@ public class ProductService : IProductService
         await _db.SaveChangesAsync();
 
         // Return the updated DTO
-        return new ProductDto(product.Id, product.Name, product.Description, product.Price, product.StockQuantity);
+        return Result<ProductDto>.Success(new ProductDto(product.Id, product.Name, product.Description, product.Price, product.StockQuantity));
     }
 
-    public async Task<bool> DeleteProductAsync(int id)
+    public async Task<Result<bool>> DeleteProductAsync(int id)
     {
         var product = await _db.Products.FindAsync(id);
-        if (product == null) return false;
+        if (product == null)
+            return Result<bool>.Failure($"Product with ID {id} not found.", ErrorType.NotFound);
 
         _db.Products.Remove(product);
         await _db.SaveChangesAsync();
 
-        return true;
+        return Result<bool>.Success(true);
     }
 }
